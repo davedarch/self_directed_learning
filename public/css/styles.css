@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0; /* Remove top margin to prevent whitespace */
+    overflow: hidden; /* Prevent scrolling */
+}
+
+.image-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh; /* Use full viewport height */
+    overflow: hidden;
+}
+
+.image-container img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Ensure the image covers the container */
+}
+
+.navigation {
+    position: absolute;
+    bottom: 0%; /* Position the arrows at the very bottom */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow {
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    margin: 0 100px;
+    opacity: 0.8;
+}
+
+.arrow:hover {
+    opacity: 1;
+}
+
+.project-title {
+    position: absolute;
+    bottom: 4%;
+    left: 8%;
+    font-size: 32px;
+    color: #fff; /* Adjust color as needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Add background for better readability */
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.step-indicator {
+    position: absolute;
+    top: 5%;
+    right: 8%;
+    font-size: 32px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.dropdown {
+    position: absolute;
+    top: 5%;
+    left: 8%;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: rgb(57, 102, 235);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.burger-menu {
+    position: absolute;
+    top: 5%;
+    left: 8%;
+}
+
+.burger-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    margin-top: 10px;
+}
+
+.burger-content a {
+    color: rgb(255, 255, 255);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.burger-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.burger-menu:hover .burger-content {
+    display: block;
+}

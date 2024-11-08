@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Directed Learning</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('imageCarousel', () => ({
+                images: [],
+                currentIndex: 0,
+                listenerAdded: false, // Flag to track if the listener is added
+                get currentImage() {
+                    return this.images[this.currentIndex] || '';
+                },
+                nextImage() {
+                    if (this.images.length > 0) {
+                        this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                    }
+                },
+                previousImage() {
+                    if (this.images.length > 0) {
+                        this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+                    }
+                },
+                init() {
+                    fetch('/api/images')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.images = data;
+                        });
+
+                    // Prevent adding multiple listeners by using the flag
+                    if (!this.listenerAdded) {
+                        window.addEventListener('keydown', this.handleKeydown.bind(this));
+                        this.listenerAdded = true; // Set the flag after listener is added
+                    }
+                },
+                handleKeydown(event) {
+                    // Prevent default action for spacebar and arrow keys
+                    if (['ArrowLeft', 'ArrowRight', ' '].includes(event.key)) {
+                        event.preventDefault();
+                    }
+
+                    // Check if focus is on a button
+                    const activeElement = document.activeElement;
+                    if (activeElement.classList.contains('arrow')) {
+                        return; // Do not handle keydown if focus is on a button
+                    }
+
+                    console.log(`Key pressed: ${event.key}`);
+                    switch (event.key) {
+                        case 'ArrowLeft':
+                            this.previousImage();
+                            break;
+                        case 'ArrowRight':
+                        case ' ':
+                            this.nextImage();
+                            break;
+                    }
+                }
+            }));
+        });
+    </script>
+</head>
+<body>
+    <div x-data="imageCarousel" x-init="init()">
+        <div class="image-container">
+            <img :src="'/images/slides/' + currentImage" alt="Learning Step" x-show="currentImage">
+        </div>
+        <div class="navigation"> 
+           <img @click="previousImage" src="/images/ui/arrow-left.png" alt="Previous" class="arrow">
+           <img @click="nextImage" src="/images/ui/arrow-right.png" alt="Next" class="arrow">
+        </div>
+        <div class="project-title absolute bottom-4 left-32 text-2xl text-white bg-black bg-opacity-50 p-4 rounded">
+            Project: Avoid The Red Dots
+        </div>
+        <div class="step-indicator absolute top-5 right-32 text-2xl text-white bg-black bg-opacity-50 p-4 rounded">
+            Step <span x-text="currentIndex + 1"></span>
+        </div>
+        <div x-data="{ open: false }" class="burger-menu">
+            <button @click="open = !open" class="flex flex-col justify-around h-8 w-8">
+                <div class="w-8 h-1 bg-white bg-opacity-50 rounded"></div>
+                <div class="w-8 h-1 bg-white bg-opacity-50 rounded"></div>
+                <div class="w-8 h-1 bg-white bg-opacity-50 rounded"></div>
+            </button>
+            <div x-show="open" class="burger-content absolute bg-black bg-opacity-50 text-white mt-2 p-4 rounded shadow-lg">
+                <a href="#" class="block text-white px-4 py-2 hover:bg-black hover:bg-opacity-75">Project 1</a>
+                <a href="#" class="block text-white px-4 py-2 hover:bg-black hover:bg-opacity-75">Project 2</a>
+                <a href="#" class="block text-white px-4 py-2 hover:bg-black hover:bg-opacity-75">Walkthrough 1</a>
+                <a href="#" class="block text-white px-4 py-2 hover:bg-black hover:bg-opacity-75">Walkthrough 2</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
